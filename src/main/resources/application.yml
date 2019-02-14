@@ -1,0 +1,26 @@
+spring:
+  boot:
+    admin:
+      client:
+        url: http://localhost:8080/admin
+        instance:
+          name: spring boot test
+          prefer-ip: true
+
+server:
+  port: 8082
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+workflow:
+  sender:
+    http:
+      url: http://localhost:8080
+
+logging:
+  level:
+    root: debug
