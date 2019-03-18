@@ -18,7 +18,7 @@ public class TaskController {
     private TaskService taskService;
 
     @PostMapping("/execute/{taskKey}/{serialNo}/{version}/{runVersion}/{nodeId}")
-    public void execute(@PathVariable String taskKey, @PathVariable String serialNo, @PathVariable Integer version, @PathVariable Integer runVersion, @PathVariable String nodeId, @RequestBody JSONObject params){
+    public Key execute(@PathVariable String taskKey, @PathVariable String serialNo, @PathVariable Integer version, @PathVariable Integer runVersion, @PathVariable String nodeId, @RequestBody JSONObject params){
         Key key = Key.builder()
                 .serialNo(serialNo)
                 .version(version)
@@ -26,5 +26,6 @@ public class TaskController {
                 .nodeId(nodeId)
                 .build();
         taskService.execute(taskKey, key, params);
+        return key;
     }
 }
