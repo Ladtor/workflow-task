@@ -15,6 +15,12 @@ public abstract class AbstractTask {
     @Autowired
     private Sender sender;
 
+    private String key;
+
+    public AbstractTask(String key) {
+        this.key = key;
+    }
+
     public void success(Key key, JSONObject result){
         try {
             sender.success(key, result);
@@ -33,8 +39,9 @@ public abstract class AbstractTask {
 
     public abstract void execute(Key key, JSONObject params);
 
-    /**
-     * @return unique key
-     */
-    public abstract String getKey();
+
+    public String getKey(){
+        return key;
+    }
+
 }

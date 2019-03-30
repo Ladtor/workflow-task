@@ -10,15 +10,14 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class TestTask extends AbstractTask {
+    public TestTask() {
+        super("testKey");
+    }
+
     @Override
     public void execute(Key key, JSONObject params) {
         JSONObject result = new JSONObject();
         result.put("message", "Ok");
         this.success(key, result);
-    }
-
-    @Override
-    public String getKey() {
-        return "testKey";
     }
 }
