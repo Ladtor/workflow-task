@@ -2,6 +2,7 @@ package com.ladtor.workflow.task.task;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ladtor.workflow.task.bo.Key;
+import com.ladtor.workflow.task.exception.TaskFailException;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,9 +16,9 @@ public class TestTask extends AbstractTask {
     }
 
     @Override
-    public void execute(Key key, JSONObject params) {
+    public JSONObject doExecute(JSONObject params) {
         JSONObject result = new JSONObject();
         result.put("message", "Ok");
-        this.success(key, result);
+        return result;
     }
 }

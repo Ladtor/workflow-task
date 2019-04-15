@@ -36,14 +36,6 @@ public class TaskService {
             }
             return;
         }
-        taskExecutor.execute(()-> {
-            try {
-                task.execute(key, params);
-            }catch (Exception e){
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("message", e.getMessage());
-                task.fail(key, jsonObject);
-            }
-        });
+        taskExecutor.execute(()-> task.execute(key, params));
     }
 }

@@ -2,6 +2,7 @@ package com.ladtor.workflow.task.task;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ladtor.workflow.task.bo.Key;
+import com.ladtor.workflow.task.exception.TaskFailException;
 import com.ladtor.workflow.task.sender.Sender;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public abstract class AbstractTask {
         this.key = key;
     }
 
-    public void success(Key key, JSONObject result){
+    private void success(Key key, JSONObject result) {
         try {
             sender.success(key, result);
         } catch (Exception e) {
@@ -29,7 +30,7 @@ public abstract class AbstractTask {
         }
     }
 
-    public void fail(Key key, JSONObject result){
+    private void fail(Key key, JSONObject result) {
         try {
             sender.fail(key, result);
         } catch (Exception e) {
@@ -37,10 +38,31 @@ public abstract class AbstractTask {
         }
     }
 
-    public abstract void execute(Key key, JSONObject params);
+    private void fail(Key key, String message) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("message", message);
+        fail(key, jsonObject);
+    }
+
+    public void execute(Key key, JSONObject params) {
+        try {
+            JSONObject result = doExecute(key, params);
+            success(key, result);
+        } catch (TaskFailException e) {
+            fail(key, e.getParams());
+        } catch (Exception e) {
+            fail(key, e.getMessage());
+        }
+    }
+
+    protected JSONObject doExecute(Key key, JSONObject params) throws TaskFailException {
+        return doExecute(params);
+    }
+
+    protected abstract JSONObject doExecute(JSONObject params) throws TaskFailException;
 
 
-    public String getKey(){
+    public String getKey() {
         return key;
     }
 
